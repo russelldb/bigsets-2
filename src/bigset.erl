@@ -22,10 +22,13 @@ make_client(Node) ->
     bigset_client:new(Node).
 
 make_bigset(Set, N) ->
+    make_bigset(Set, N, bigset_client:new()).
+
+make_bigset(Set, N, Client) ->
     Words = read_words(N*2),
 
     Batches = make_batches(Words, N, []),
-    Res = [bigset_client:update(Set, Batch) ||
+    Res = [bigset_client:update(Set, Batch, Client) ||
               Batch <- Batches],
     case lists:all(fun(E) ->
                            E == ok end,

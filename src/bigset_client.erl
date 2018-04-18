@@ -30,7 +30,8 @@
          is_member/2,
          is_member/4,
          is_subset/2,
-         is_subset/4
+         is_subset/4,
+         ping/1
         ]).
 
 -define(DEFAULT_TIMEOUT, 60000).
@@ -50,6 +51,9 @@ new() ->
 new(Node) ->
     {?MODULE, Node}.
 
+-spec ping(client()) -> pong | pang.
+ping({?MODULE, Node}=_This) ->
+    net_adm:ping(Node).
 
 -spec is_subset(set(), [member()]) ->
                        {ok, [{member(), ctx()}]} |
